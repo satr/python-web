@@ -23,6 +23,7 @@ make run-api-local
 Open links
 * [root](http://127.0.0.1:8000)
 * [item](http://localhost:8000/items/12?q=value)
+* [swagger UI](http://localhost:8000/docs)
 
 
 ### Build and run api docker image
