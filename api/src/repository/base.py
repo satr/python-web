@@ -2,12 +2,12 @@ from typing import List, Optional, TypeVar, Generic
 
 T = TypeVar('T')
 
-class Repository(Generic[T]):
+class BaseRepository(Generic[T]):
     def __init__(self, id_field: str):
         self._items: List[T] = []
         self._id_field = id_field
 
-    def get(self) -> List[T]:
+    def list(self) -> List[T]:
         return self._items
 
     def get_by_id(self, item_id) -> Optional[T]:

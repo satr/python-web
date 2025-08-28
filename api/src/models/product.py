@@ -1,13 +1,10 @@
 from datetime import datetime
-from typing import Optional, Union
+from typing import Optional
 
-from pydantic import BaseModel
-
-
-class Product(BaseModel):
-    id: Union[str, None] = None
+class Product:
+    id: str
     name: str
-    description: Optional[str] = None
+    description: str
     price: float
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
+    created_at: datetime
+    updated_at: datetime
