@@ -26,7 +26,22 @@ Open links
 * [swagger UI](http://localhost:8000/docs)
 * [redocs](https://github.com/Redocly/redoc) [docs UI](http://localhost:8000/redocs)
 
-
+#### Test API
+* Create products
+```
+P1=$(curl localhost:8000/products --json '{"name":"test1", "price": 20.0}'|jq -r .product_id)
+P2=$(curl localhost:8000/products --json '{"name":"test2", "price": 30.0}'|jq -r .product_id)
+curl localhost:8000/products
+curl localhost:8000/products/$P1
+curl localhost:8000/products/$P2
+```
+* Create orders
+```
+ORDER_ID1=$(curl localhost:8000/orders --json '{"items":[{"product_id":"'$P1'","quantity":2},{"product_id":"'$P2'","quantity":10}]}'|jq -r .order_id)
+curl localhost:8000/orders
+curl localhost:8000/orders/$ORDER_ID1
+```
+ 
 ### Build and run api docker image
 ```
 cd ./api
