@@ -9,6 +9,5 @@ class Product(BaseModel):
     name: str
     description: Optional[str] = None
     price: float
-    in_stock: bool = True
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None

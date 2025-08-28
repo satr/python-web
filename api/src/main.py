@@ -1,3 +1,4 @@
+import http
 import uuid
 from datetime import datetime
 from typing import Union
@@ -7,45 +8,76 @@ from fastapi.responses import JSONResponse
 
 from api.src.models.order import Order
 from api.src.models.product import Product
+from api.src.repository import Repository
 
 app = FastAPI()
-products = []
-orders = []
+products_repo = Repository[Product](id_field='id')
+orders_repo = Repository[Order](id_field='order_id')
+
 @app.get("/")
 def read_root():
     return {"hello": "world"}
 
 @app.post("/orders")
 def create_order(order: Order):
-    order.orderId = str(uuid.uuid4())
-    orders.append(order)
-    return {"order_id": order.orderId, "order_product_id": order.productId}
+    try:
+        if len(order.items) == 0:
+            raise HTTPException(status_code=500, detail="Order must have at least one item")
+        order.id = str(uuid.uuid4())
+
+        for item in order.items:
+            product = products_repo.get_by_id(item.product_id)
+            if not product:
+                raise HTTPException(status_code=400, detail=f"Product with id {item.product_id} does not exist")
+            item.order_id = order.id
+            item.price = product.price
+
+        order.updated_at = order.created_at = datetime.now()
+        orders_repo.upsert(order)
+        return JSONResponse(content={"order_id": order.id}, status_code=http.HTTPStatus.CREATED)
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Failed to create Order {str(ex)}")
 
 @app.get("/orders/{order_id}")
-def get_order_by_id(order_id: int, q: Union[str, None] = None):
-    existing_order = next((order for order in orders if getattr(order, 'orderId', None) == order_id), None)
-    if not existing_order:
-        raise HTTPException(status_code=404, detail="Order not found")
-    return {"order_id": order_id, "q": q}
+def get_order_by_id(order_id: str, q: Union[str, None] = None):
+    try:
+        existing_order = orders_repo.get_by_id(order_id)
+        if not existing_order:
+            raise HTTPException(status_code=404, detail="Order not found")
+        return JSONResponse(content=existing_order.model_dump(), status_code=http.HTTPStatus.OK)
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Failed to get Order {str(ex)}")
+
+
+@app.get("/orders")
+def get_orders(q: Union[str, None] = None):
+    try:
+        return [order.model_dump() for order in orders_repo.get()]
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Failed to get Orders {str(ex)}")
 
 @app.post("/products")
 def create_product(product: Product):
+    product.id = str(uuid.uuid4())
     try:
-        product.id = str(uuid.uuid4())
-        product.updated_at = product.created_at = datetime.now()
-        products.append(product)
-        return JSONResponse(content={"status": "ok"}, status_code=200)
-    except Exception:
-        raise HTTPException(status_code=500, detail="Failed to create Product")
+        products_repo.upsert(product)
+        return JSONResponse(content={"product_id": product.id}, status_code=http.HTTPStatus.CREATED)
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Failed to create Product {str(ex)}")
 
 @app.get("/products/{product_id}")
 def get_product_by_id(product_id: str, q: Union[str, None] = None):
-    existing_product = next((product for product in products if getattr(product, 'id', None) == product_id), None)
-    if not existing_product:
-        raise HTTPException(status_code=404, detail="Product not found")
-    return {"order_id": product_id, "q": q}
+    try:
+        existing_product = products_repo.get_by_id(product_id)
+        if not existing_product:
+            raise HTTPException(status_code=404, detail="Product not found")
+        return JSONResponse(content=existing_product.model_dump(), status_code=http.HTTPStatus.OK)
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Failed to create Product {str(ex)}")
 
 @app.get("/products")
 def get_products(q: Union[str, None] = None):
-    return [product.model_dump() for product in products]
-
+    try:
+        return [product.model_dump() for product in products_repo.get()]
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Failed to get Products {str(ex)}")

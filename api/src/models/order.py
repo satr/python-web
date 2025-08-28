@@ -1,15 +1,18 @@
-from typing import Union
+from datetime import datetime
+from typing import Union, Optional
 
 from pydantic import BaseModel
 
 class Order(BaseModel):
-    orderId: Union[str, None] = None
-    userId: Union[str, None] = None
+    id: Union[str, None] = None
+    user_id: Union[str, None] = None
     status: Union[str, None] = "pending"
-    createdAt: Union[str, None] = None
-    updatedAt: Union[str, None] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    items: Optional[list['OrderItem']] = []
 
 class OrderItem(BaseModel):
-    productId: Union[str, None] = None
+    order_id: Union[str, None] = None
+    product_id: str
     quantity: Union[int, None] = 1
     price: Union[float, None] = None
