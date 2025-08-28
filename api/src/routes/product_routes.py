@@ -2,9 +2,9 @@ import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, HTTPException
-from api.src.models.product import Product
-from api.src.schemas.product_schema import ProductSchema, ProductResponseSchema
-from api.src.services.product_service import ProductService
+from models.product import Product
+from schemas.product_schema import ProductSchema, ProductResponseSchema
+from services.product_service import ProductService
 
 
 def get_product_router(product_service: ProductService) -> APIRouter:

@@ -2,9 +2,9 @@ import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, HTTPException
-from api.src.models.order import Order, OrderItem
-from api.src.schemas.order_schema import OrderSchema, OrderItemSchema, OrderResponseSchema
-from api.src.services.order_service import OrderService
+from models.order import Order, OrderItem
+from schemas.order_schema import OrderSchema, OrderItemSchema, OrderResponseSchema
+from services.order_service import OrderService
 
 
 def get_order_router(order_service: OrderService) -> APIRouter:

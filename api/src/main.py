@@ -2,12 +2,12 @@ import http
 
 from fastapi import FastAPI,Response
 
-from api.src.repository.order_repository import OrderRepository
-from api.src.repository.product_repository import ProductRepository
-from api.src.routes.order_routes import get_order_router
-from api.src.routes.product_routes import get_product_router
-from api.src.services.order_service import OrderService
-from api.src.services.product_service import ProductService
+from repository.order_repository import OrderRepository
+from repository.product_repository import ProductRepository
+from routes.order_routes import get_order_router
+from routes.product_routes import get_product_router
+from services.order_service import OrderService
+from services.product_service import ProductService
 
 app = FastAPI()
 

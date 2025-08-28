@@ -2,8 +2,8 @@ import uuid
 from datetime import datetime
 from typing import Optional
 
-from api.src.models.product import Product
-from api.src.repository.product_repository import ProductRepository
+from models.product import Product
+from repository.product_repository import ProductRepository
 
 
 class ProductService:

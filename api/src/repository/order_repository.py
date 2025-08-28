@@ -1,5 +1,5 @@
-from api.src.repository.base import BaseRepository
-from api.src.models.order import Order
+from repository.base import BaseRepository
+from models.order import Order
 
 class OrderRepository(BaseRepository[Order]):
     def __init__(self):

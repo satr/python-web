@@ -2,9 +2,9 @@ import uuid
 from datetime import datetime
 from typing import Optional
 
-from api.src.models.order import Order
-from api.src.repository.order_repository import OrderRepository
-from api.src.repository.product_repository import ProductRepository
+from models.order import Order
+from repository.order_repository import OrderRepository
+from repository.product_repository import ProductRepository
 
 
 class OrderService:
