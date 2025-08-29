@@ -41,7 +41,7 @@
 <h2>Orders</h2>
 <ul>
     {% for order in orders %}
-        <li>{{ order.order_id }}</li>
+        <li><a href="{{ url_for('routes.order_detail', order_id=order.order_id) }}">Order {{ order.order_id }}</a></li>
     {% endfor %}
 </ul>
 

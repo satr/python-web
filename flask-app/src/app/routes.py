@@ -61,3 +61,11 @@ def get_orders(client):
 @bp.route("/healthz")
 def healthz():
     return "OK", http.HTTPStatus.OK
+
+@bp.route("/order/<order_id>")
+def order_detail(order_id):
+    client = Client(base_url=os.getenv("API_URL", "http://localhost:8000"))
+    from fast_api_client.api.orders.get_order_orders_order_id_get import sync_detailed as get_order_detail
+    response = get_order_detail(client=client, order_id=order_id)
+    order = response.parsed if response.parsed is not None else None
+    return render_template("order_detail.html", order=order)
