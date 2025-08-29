@@ -9,4 +9,4 @@ COPY ./src .
 
 EXPOSE 8001
 USER 1000
-CMD ["gunicorn", "main:app", "-k", "uvicorn.workers.UvicornWorker", "-w", "4", "-b", "0.0.0.0:8001", "--log-level", "info"]
+CMD ["gunicorn", "app:create_app()", "-w", "4", "-b", "0.0.0.0:8001", "--log-level", "info"]

@@ -30,7 +30,8 @@ make run-api-local
 Open links
 * [healthz](http://localhost:8000/healthz)
 * [swagger UI](http://localhost:8000/docs)
-* [redocs](https://github.com/Redocly/redoc) [docs UI](http://localhost:8000/redocs)
+* [redocs](https://github.com/Redocly/redoc) UI [docs](http://localhost:8000/redocs)
+* [OpenAPI](https://www.openapis.org/) [schema](http://localhost:8000/openapi.json)
 
 #### Test API
 * Create products
