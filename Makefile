@@ -13,7 +13,7 @@ run-flask-app-local:
 	cd ./flask-app/src && ../.venv/bin/uvicorn main:app --reload
 
 
-.PHONY: gen-flask-app-api-models
-gen-flask-app-api-models:
+.PHONY: gen-api-client
+gen-api-client:
 	echo "run API" && cd ./flask-app/src && mkdir -p app/clients/fast_api; ../.venv/bin/openapi-python-client generate --url http://localhost:8000/openapi.json --output-path=app/clients/fast_api --overwrite && cd ./app/clients/fast_api && pip install -e .
 

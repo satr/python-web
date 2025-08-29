@@ -61,3 +61,10 @@ Open the link [http://127.0.0.1:8000](http://127.0.0.1:8000)
 ```
 deactivate
 ```
+
+### Generate API client for flask-app
+* Run API locally
+* [Re-]Generate API client
+```
+make gen-api-client
+```
