@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Product</title>
+</head>
+<body>
+    <h1>Create Product</h1>
+<form method="post">
+    {% if editable %}
+        <p><strong>Name:</strong>
+            <input type="text" name="product_name">
+        </p>
+        <p><strong>Price:</strong> <input type="number" name="product_price" min="0" value="0.0"></p>
+        <button type="submit">Create</button>
+        </form>
+    {% else %}
+        <p>{{product_result}}</p>
+    {% endif %}
+    <p><a href="{{ url_for('main.home') }}">Back to Home</a></p>
+</body>
+</html>
+

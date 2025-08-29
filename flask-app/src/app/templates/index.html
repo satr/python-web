@@ -12,7 +12,11 @@
         <li>{{ product.name }} - ${{ product.price }}</li>
     {% endfor %}
 </ul>
-
+<a href="{{ url_for('products.product_details') }}">Create Product</a>
+{% if product_result %}
+    <h3>{{ product_result }}</h3>
+{% endif %}
+<hr>
 <h2>Create Order</h2>
 <form method="post">
     <table>
@@ -41,7 +45,7 @@
 <h2>Orders</h2>
 <ul>
     {% for order in orders %}
-        <li><a href="{{ url_for('routes.order_detail', order_id=order.order_id) }}">Order {{ order.order_id }}</a></li>
+        <li><a href="{{ url_for('orders.order_detail', order_id=order.order_id) }}">Order {{ order.order_id }}</a></li>
     {% endfor %}
 </ul>
 
