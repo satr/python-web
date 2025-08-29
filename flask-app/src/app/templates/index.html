@@ -11,5 +11,39 @@
     {% for product in products %}
         <li>{{ product.name }} - ${{ product.price }}</li>
     {% endfor %}
+</ul>
+
+<h2>Create Order</h2>
+<form method="post">
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>
+                <input type="number" name="quantity_{{ product.product_id }}" min="0" value="0">
+                <input type="hidden" name="product_id_{{ product.product_id }}" value="{{ product.product_id }}">
+                <input type="hidden" name="price_{{ product.product_id }}" value="{{ product.price }}">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button type="submit">Submit Order</button>
+</form>
+
+{% if order_result %}
+    <h3>{{ order_result }}</h3>
+{% endif %}
+<hr>
+<h2>Orders</h2>
+<ul>
+    {% for order in orders %}
+        <li>{{ order.order_id }}</li>
+    {% endfor %}
+</ul>
+
 </body>
 </html>
