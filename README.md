@@ -1,12 +1,19 @@
 # python-web
 
 ## API
+### Create env
 ```
-source venv/bin/activate       
 cd ./api
-python3 -m venv venv 
-pip install "fastapi[standard]"
+python -m venv .venv
+source .venv/bin/activate       
+python3 -m .venv venv 
+#pip install "fastapi[standard]"
 pip freeze > requirements.txt
+```
+### Re-install env
+```
+cd ./api
+pip install -r requirements.txt
 ```
 
 ### Recreate env
@@ -21,8 +28,7 @@ cd .
 make run-api-local
 ```
 Open links
-* [root](http://127.0.0.1:8000)
-* [item](http://localhost:8000/items/12?q=value)
+* [healthz](http://localhost:8000/healthz)
 * [swagger UI](http://localhost:8000/docs)
 * [redocs](https://github.com/Redocly/redoc) [docs UI](http://localhost:8000/redocs)
 

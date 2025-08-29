@@ -25,7 +25,6 @@ env==0.1.0
 environs==14.2.0
 exceptiongroup==1.2.2
 fastapi==0.115.12
-Flask==3.1.1
 frozenlist==1.7.0
 future==1.0.0
 gunicorn==23.0.0
