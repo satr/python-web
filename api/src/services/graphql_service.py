@@ -1,5 +1,7 @@
+import http
 from http.client import HTTPException
 
+from models.product import Product
 from schemas.product_schema import convert_to_product_schema
 from services.order_service import OrderService
 from services.product_service import ProductService
@@ -13,9 +15,9 @@ class GraphQLService:
         self.product_service = product_service
         self.graphql_schema = schemas.graphql_schema.schema
         # self.q.type_map["Date"] = schemas.DateType
-        self.graphql_schema.get_type("Query").fields["product"].resolve = self.get_product
+        self.graphql_schema.get_type("Mutation").fields["create_product"].resolve = self.create_product
         self.graphql_schema.get_type("Query").fields["products"].resolve = self.get_products
-        pass
+        self.graphql_schema.get_type("Query").fields["product"].resolve = self.get_product
 
     def execute_query(self, query, variables=None):
         try:
@@ -27,6 +29,24 @@ class GraphQLService:
     def execute_mutation(self, mutation, variables=None):
         # Execute a GraphQL mutation
         pass
+
+    def create_product(self, obj, info, input):
+        if not "name" in input or not "price" in input:
+            raise HTTPException(status_code=400, detail="Product name and price are required")
+        product_name = input["name"]
+        product = self.product_service.get_product_by_name(product_name)
+        if product:
+            raise HTTPException(status_code=500, detail="Product with the same name already exists")
+        try:
+            product = Product()
+            product.name = product_name
+            if "description" in input:
+                product.description = input["description"]
+            product.price = input["price"]
+            product_id = self.product_service.create_product(product)
+            return {"id": product_id}
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
 
     def get_product(self, obj, info, id=None, name=None):
         if id:

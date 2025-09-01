@@ -15,7 +15,7 @@ class ProductSchema(BaseModel):
     updated_at: Optional[datetime] = None
 
 class ProductResponseSchema(BaseModel):
-    product_id: str
+    id: str
 
 
 def convert_to_product_schema(product: Product) -> ProductSchema:

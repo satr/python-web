@@ -1,4 +1,8 @@
-# python-web
+# Example on Python
+* FastAPI: REST API, GraphQL
+* Flask: Web-app
+* SQL: PostgreSQL
+* Containers: Docker, Docker compose
 
 ## API
 ### Create env
@@ -28,32 +32,46 @@ Open links
 * [OpenAPI](https://www.openapis.org/) [schema](http://localhost:8000/openapi.json)
 
 #### Test API
-* Create products with REST API
+* Create and get products with REST API
+  * create
+    ```
+    P1=$(curl localhost:8000/products --json '{"name":"test1", "price": 20.0}'|jq -r .id)
+    P2=$(curl localhost:8000/products --json '{"name":"test2", "price": 30.0}'|jq -r .id)
+    ```
+  * get
+    ```
+    curl localhost:8000/products
+    curl localhost:8000/products/$P1
+    curl localhost:8000/products/$P2
+    ```
+* Create and get products with GraphQL
+  * create
+    ```
+    curl -X 'POST' 'http://localhost:8000/graphql/' \
+      -H 'accept: application/json' -H 'Content-Type: application/json' \
+      -d '{
+        "query": "mutation CreateProduct($input: CreateProductInput!) { create_product(input: $input) { id }}",
+        "variables": { "input": {"name": "p1","price": 19.99 }}
+        }'
+    ```
+  * get
+    ```
+    curl -X 'POST' 'http://localhost:8000/graphql/' \
+      -H 'accept: application/json' -H 'Content-Type: application/json' \
+      -d '{"query": "{products{name,id,price,description,created_at,updated_at}}"
+    }'
+    
+    curl -X 'POST' 'http://localhost:8000/graphql/' \
+      -H 'accept: application/json' -H 'Content-Type: application/json' \
+      -d '{"query": "{product(id:\"064f529a-b5f8-4c24-a8af-92f6c931aab2\"){id,name}}"}'
+    
+    curl -X 'POST' 'http://localhost:8000/graphql/' \
+      -H 'accept: application/json' -H 'Content-Type: application/json' \
+      -d '{"query": "{product(name:\"my-product1\"){id,name}}"}'
+    ```
+* Create orders with REST API
 ```
-P1=$(curl localhost:8000/products --json '{"name":"test1", "price": 20.0}'|jq -r .product_id)
-P2=$(curl localhost:8000/products --json '{"name":"test2", "price": 30.0}'|jq -r .product_id)
-curl localhost:8000/products
-curl localhost:8000/products/$P1
-curl localhost:8000/products/$P2
-```
-* Get products with GraphQL
-```
-curl -X 'POST' 'http://localhost:8000/graphql/' \
-  -H 'accept: application/json' -H 'Content-Type: application/json' \
-  -d '{"query": "{products{name,id,price,description,created_at,updated_at}}"
-}'
-
-curl -X 'POST' 'http://localhost:8000/graphql/' \
-  -H 'accept: application/json' -H 'Content-Type: application/json' \
-  -d '{"query": "{product(id:\"064f529a-b5f8-4c24-a8af-92f6c931aab2\"){id,name}}"}'
-
-curl -X 'POST' 'http://localhost:8000/graphql/' \
-  -H 'accept: application/json' -H 'Content-Type: application/json' \
-  -d '{"query": "{product(name:\"my-product1\"){id,name}}"}'
-```
-* Create orders
-```
-ORDER_ID1=$(curl localhost:8000/orders --json '{"items":[{"product_id":"'$P1'","quantity":2},{"product_id":"'$P2'","quantity":10}]}'|jq -r .order_id)
+ORDER_ID1=$(curl localhost:8000/orders --json '{"items":[{"id":"'$P1'","quantity":2},{"id":"'$P2'","quantity":10}]}'|jq -r .order_id)
 curl localhost:8000/orders
 curl localhost:8000/orders/$ORDER_ID1
 ```
@@ -77,3 +95,9 @@ deactivate
 ```
 make gen-api-client
 ```
+
+### Build and run api and apps with docker compose
+```
+docker compose up
+```
+Open the link [http://127.0.0.1:8001](http://127.0.0.1:8001)

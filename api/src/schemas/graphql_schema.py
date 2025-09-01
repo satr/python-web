@@ -30,7 +30,7 @@ class GraphQLRequest(BaseModel):
 
 schema = build_schema("""
   type Product {
-    id: ID
+    id: ID!
     name: String!
     price: Float!
     description: String
@@ -38,22 +38,26 @@ schema = build_schema("""
     updated_at: String
   }
 
-  input ProductInput {
+  input CreateProductInput {
     name: String!
     description: String
     price: Float!
   }
 
-  input OrderInput {
+  input CreateOrderInput {
+    items: [CreateOrderItemInput!]!
+  }
+
+  input CreateOrderItemInput {
     productId: ID!
     quantity: Int!
   }
 
-  type ProductResponse {
+  type CreateProductResponse {
     id: ID!
   }
 
-  type OrderResponse {
+  type CreateOrderResponse {
     orderId: ID!
   }
 
@@ -63,8 +67,8 @@ schema = build_schema("""
   }
 
   type Mutation {
-    createProduct(input: ProductInput!): ProductResponse!
-    createOrder(input: OrderInput!): OrderResponse!
+    create_product(input: CreateProductInput!): CreateProductResponse!
+    create_order(input: CreateOrderInput!): CreateOrderResponse!
   }
 """)
 # graphql_schema.type_map["Date"] = DateType
