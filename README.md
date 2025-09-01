@@ -28,13 +28,28 @@ Open links
 * [OpenAPI](https://www.openapis.org/) [schema](http://localhost:8000/openapi.json)
 
 #### Test API
-* Create products
+* Create products with REST API
 ```
 P1=$(curl localhost:8000/products --json '{"name":"test1", "price": 20.0}'|jq -r .product_id)
 P2=$(curl localhost:8000/products --json '{"name":"test2", "price": 30.0}'|jq -r .product_id)
 curl localhost:8000/products
 curl localhost:8000/products/$P1
 curl localhost:8000/products/$P2
+```
+* Get products with GraphQL
+```
+curl -X 'POST' 'http://localhost:8000/graphql/' \
+  -H 'accept: application/json' -H 'Content-Type: application/json' \
+  -d '{"query": "{products{name,id,price,description,created_at,updated_at}}"
+}'
+
+curl -X 'POST' 'http://localhost:8000/graphql/' \
+  -H 'accept: application/json' -H 'Content-Type: application/json' \
+  -d '{"query": "{product(id:\"064f529a-b5f8-4c24-a8af-92f6c931aab2\"){id,name}}"}'
+
+curl -X 'POST' 'http://localhost:8000/graphql/' \
+  -H 'accept: application/json' -H 'Content-Type: application/json' \
+  -d '{"query": "{product(name:\"my-product1\"){id,name}}"}'
 ```
 * Create orders
 ```

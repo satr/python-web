@@ -1,9 +1,5 @@
-import uuid
-from datetime import datetime
-
 from fastapi import APIRouter, HTTPException
-from models.product import Product
-from schemas.product_schema import ProductSchema, ProductResponseSchema
+from schemas.product_schema import ProductSchema, ProductResponseSchema, convert_to_product_schema, convert_to_product
 from services.product_service import ProductService
 
 
@@ -41,19 +37,3 @@ def get_product_router(product_service: ProductService) -> APIRouter:
 
     return router
 
-def convert_to_product(product_schema: ProductSchema) -> Product:
-    product = Product()
-    product.name = product_schema.name
-    product.description = product_schema.description
-    product.price = product_schema.price
-    return product
-
-def convert_to_product_schema(product: Product) -> ProductSchema:
-    return ProductSchema(
-        product_id=product.id,
-        name=product.name,
-        description=product.description,
-        price=product.price,
-        created_at=product.created_at,
-        updated_at=product.updated_at,
-    )

@@ -11,10 +11,12 @@ class ProductService:
         response = get_products_list(client=self.client)
         return response.parsed if response.parsed is not None else []
 
-    def parse_product_form(self, form):
-        name = form.get(f"product_name")
-        price = float(form.get(f"product_price", 0))
-        return ProductSchema(name=name, price=price)
+    @staticmethod
+    def get_product_from_request(request):
+        name = request.form.get(f"product_name")
+        description = request.form.get(f"product_description")
+        price = float(request.form.get(f"product_price", 0))
+        return ProductSchema(name=name, description=description, price=price)
 
     def post_product(self, product):
         response = create_product(client=self.client, body=product)

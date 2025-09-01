@@ -8,8 +8,13 @@
     <h1>Create Product</h1>
 <form method="post">
     {% if editable %}
-        <p><strong>Name:</strong>
+        <p>
+            <strong>Name:</strong>
             <input type="text" name="product_name">
+        </p>
+        <p>
+            <strong>Description:</strong>
+            <input type="text" name="product_description">
         </p>
         <p><strong>Price:</strong> <input type="number" name="product_price" min="0" value="0.0"></p>
         <button type="submit">Create</button>

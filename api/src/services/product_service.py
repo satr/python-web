@@ -19,6 +19,10 @@ class ProductService:
     def get_product(self, product_id: str) -> Optional[Product]:
         return self._product_repo.get_by_id(product_id)
 
+    def get_product_by_name(self, name: str) -> Optional[Product]:
+        products = next(product for product in self._product_repo.list() if product.name == name)
+        return products
+
     def list_products(self):
         return self._product_repo.list()
 
