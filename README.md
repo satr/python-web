@@ -6,9 +6,9 @@
 cd ./api
 python -m venv .venv
 source .venv/bin/activate       
-python3 -m .venv venv 
-#pip install "fastapi[standard]"
-pip freeze > requirements.txt
+pip install -r requirements.txt
+# Run following command when changed requirements.txt
+# pip freeze > requirements.txt
 ```
 ### Re-install env
 ```
@@ -16,15 +16,9 @@ cd ./api
 pip install -r requirements.txt
 ```
 
-### Recreate env
-```
-cd ./api
-pip install -r requirements.txt
-```
-
 ### Run locally - gunicorn ensure to reload web-page on changed source code
 ```
-cd .
+cd <repo-root>
 make run-api-local
 ```
 Open links
