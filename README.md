@@ -1,5 +1,5 @@
 # Example on Python
-* FastAPI: REST API, GraphQL
+* FastAPI: REST API, GraphQL, RabbitMQ
 * Flask: Web-app
 * SQL: PostgreSQL
 * Containers: Docker, Docker compose
