@@ -11,20 +11,20 @@ T = TypeVar("T", bound="OrderResponseSchema")
 class OrderResponseSchema:
     """
     Attributes:
-        order_id (str):
+        id (str):
     """
 
-    order_id: str
+    id: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        order_id = self.order_id
+        id = self.id
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "order_id": order_id,
+                "id": id,
             }
         )
 
@@ -33,10 +33,10 @@ class OrderResponseSchema:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        order_id = d.pop("order_id")
+        id = d.pop("id")
 
         order_response_schema = cls(
-            order_id=order_id,
+            id=id,
         )
 
         order_response_schema.additional_properties = d

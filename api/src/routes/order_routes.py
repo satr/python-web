@@ -16,15 +16,15 @@ def get_order_router(order_service: OrderService) -> APIRouter:
         if not order.items or len(order.items) == 0:
             raise HTTPException(status_code=400, detail="Order must have at least one item")
         try:
-            order_id = order_service.create_order(convert_to_order(order))
-            return OrderResponseSchema(order_id=order_id)
+            id = order_service.upsert_order(convert_to_order(order))
+            return OrderResponseSchema(id=id)
         except Exception as ex:
             raise HTTPException(status_code=500, detail=f"Failed to create an Order: {ex}")
 
-    @router.get("/{order_id}", response_model=OrderSchema)
-    def get_order(order_id: str):
+    @router.get("/{id}", response_model=OrderSchema)
+    def get_order(id: str):
         try:
-            order = order_service.get_order(order_id)
+            order = order_service.get_order(id)
             if not order:
                 raise HTTPException(status_code=404, detail="Order not found")
             return convert_to_order_schema(order)
@@ -45,8 +45,8 @@ def get_order_router(order_service: OrderService) -> APIRouter:
 
 def convert_to_order(order_schema: OrderSchema) -> Order:
     order = Order()
-    if hasattr(order_schema, "order_id") and not order_schema.order_id is None:
-        order.id = order_schema.order_id
+    if hasattr(order_schema, "id") and not order_schema.id is None:
+        order.id = order_schema.id
     order.status = order_schema.status or "pending"
     order.total=order_schema.total or 0.0
     order.user_id=order_schema.user_id or "anonymous"
@@ -73,7 +73,7 @@ def convert_to_order_item_schema(order_item: OrderItem) -> OrderItemSchema:
 
 def convert_to_order_schema(order) -> OrderSchema:
     return OrderSchema(
-        order_id=order.id,
+        id=order.id,
         user_id=order.user_id,
         created_at=order.created_at,
         updated_at=order.updated_at,

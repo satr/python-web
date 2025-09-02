@@ -1,4 +1,4 @@
-from app.clients.fast_api.fast_api_client.api.orders.get_order_orders_order_id_get import \
+from app.clients.fast_api.fast_api_client.api.orders.get_order_orders_id_get import  \
     sync_detailed as get_order_detail
 from app.clients.fast_api.fast_api_client.api.orders.create_order_orders_post import sync_detailed as create_order
 from app.clients.fast_api.fast_api_client.api.orders.list_orders_orders_get import sync_detailed as get_orders_list
@@ -19,8 +19,8 @@ class OrderService:
         response = create_order(client=self.client, body=order)
         return response.parsed
 
-    def get_order_detail(self, order_id):
-        response = get_order_detail(client=self.client, order_id=order_id)
+    def get_order_detail(self, id):
+        response = get_order_detail(client=self.client, id=id)
         return response.parsed if response.parsed is not None else None
 
     def parse_order_form(self, form, products):

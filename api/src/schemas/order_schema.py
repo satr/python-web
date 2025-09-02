@@ -9,7 +9,7 @@ class OrderItemSchema(BaseModel):
     price: Optional[float] = None
 
 class OrderSchema(BaseModel):
-    order_id: Optional[str] = Field(default=None)
+    id: Optional[str] = Field(default=None)
     items: List[OrderItemSchema]
     user_id: Optional[str] = Field(default=None)
     created_at: Optional[datetime] = None
@@ -18,4 +18,4 @@ class OrderSchema(BaseModel):
     status: Optional[str] = None
 
 class OrderResponseSchema(BaseModel):
-    order_id: str
+    id: str

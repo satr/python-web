@@ -1,8 +1,8 @@
 import pika
 
-from fast_api_client import Client
+from app.clients.fast_api.fast_api_client import Client
 from app.clients.fast_api.fast_api_client.api.orders.create_order_orders_post import sync_detailed as create_order
-from app.clients.fast_api.fast_api_client.api.orders.get_order_orders_order_id_get import  sync_detailed as get_order
+from app.clients.fast_api.fast_api_client.api.orders.get_order_orders_id_get import   sync_detailed as get_order
 
 
 class OrderProcessorService:
@@ -22,11 +22,11 @@ class OrderProcessorService:
 
     def process_order_message(self, ch, method, properties, body):
         try:
-            order_id = body.decode()
-            order_result = get_order(client=self._api_client, order_id=order_id)
+            id = body.decode()
+            order_result = get_order(client=self._api_client, id=id)
             order = order_result.parsed
             if not order:
-                raise Exception(f'Order id not found by id {order_id}')
+                raise Exception(f'Order not found by id {id}')
             order.status = 'completed'
             create_order(client=self._api_client, body=order)
         except Exception as ex:

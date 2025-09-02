@@ -21,12 +21,13 @@ services:
     environment:
       DATABASE_URL: postgresql://appuser:secret@db:5432/appdb
       PYTHONUNBUFFERED: 1
-      MQ_HOST: localhost
+      MQ_HOST: mq
       MQ_PORT: 5672
       MQ_USER: guest
       MQ_PASSWORD: guest
     depends_on:
       - db
+      - mq
   flask-app:
     build: ./flask-app
     ports:
@@ -39,5 +40,16 @@ services:
       MQ_PORT: 5672
       MQ_USER: guest
       MQ_PASSWORD: guest
+  order-processor:
+    build: ./jobs/order_processor
+    environment:
+      DATABASE_URL: postgresql://appuser:secret@db:5432/appdb
+      MQ_HOST: mq
+      MQ_PORT: 5672
+      MQ_USER: guest
+      MQ_PASSWORD: guest
+    depends_on:
+      - db
+      - mq
 volumes:
   db_data:

@@ -1,6 +1,6 @@
 import os
 
-from jobs.order_processor.src.services.order_processor_service import OrderProcessorService
+from services.order_processor_service import OrderProcessorService
 
 
 def main():

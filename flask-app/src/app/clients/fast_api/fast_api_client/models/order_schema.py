@@ -20,7 +20,7 @@ class OrderSchema:
     """
     Attributes:
         items (list['OrderItemSchema']):
-        order_id (Union[None, Unset, str]):
+        id (Union[None, Unset, str]):
         user_id (Union[None, Unset, str]):
         created_at (Union[None, Unset, datetime.datetime]):
         updated_at (Union[None, Unset, datetime.datetime]):
@@ -29,7 +29,7 @@ class OrderSchema:
     """
 
     items: list["OrderItemSchema"]
-    order_id: Union[None, Unset, str] = UNSET
+    id: Union[None, Unset, str] = UNSET
     user_id: Union[None, Unset, str] = UNSET
     created_at: Union[None, Unset, datetime.datetime] = UNSET
     updated_at: Union[None, Unset, datetime.datetime] = UNSET
@@ -43,11 +43,11 @@ class OrderSchema:
             items_item = items_item_data.to_dict()
             items.append(items_item)
 
-        order_id: Union[None, Unset, str]
-        if isinstance(self.order_id, Unset):
-            order_id = UNSET
+        id: Union[None, Unset, str]
+        if isinstance(self.id, Unset):
+            id = UNSET
         else:
-            order_id = self.order_id
+            id = self.id
 
         user_id: Union[None, Unset, str]
         if isinstance(self.user_id, Unset):
@@ -90,8 +90,8 @@ class OrderSchema:
                 "items": items,
             }
         )
-        if order_id is not UNSET:
-            field_dict["order_id"] = order_id
+        if id is not UNSET:
+            field_dict["id"] = id
         if user_id is not UNSET:
             field_dict["user_id"] = user_id
         if created_at is not UNSET:
@@ -117,14 +117,14 @@ class OrderSchema:
 
             items.append(items_item)
 
-        def _parse_order_id(data: object) -> Union[None, Unset, str]:
+        def _parse_id(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(Union[None, Unset, str], data)
 
-        order_id = _parse_order_id(d.pop("order_id", UNSET))
+        id = _parse_id(d.pop("id", UNSET))
 
         def _parse_user_id(data: object) -> Union[None, Unset, str]:
             if data is None:
@@ -189,7 +189,7 @@ class OrderSchema:
 
         order_schema = cls(
             items=items,
-            order_id=order_id,
+            id=id,
             user_id=user_id,
             created_at=created_at,
             updated_at=updated_at,

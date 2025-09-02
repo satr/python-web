@@ -43,11 +43,22 @@
 {% endif %}
 <hr>
 <h2>Orders</h2>
-<ul>
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>Created</th>
+        <th>Total</th>
+        <th>Status</th>
+    </tr>
     {% for order in orders %}
-        <li><a href="{{ url_for('orders.order_detail', order_id=order.order_id) }}">Order {{ order.order_id }}</a></li>
+    <tr>
+        <td><a href="{{ url_for('orders.order_detail', id=order.id) }}">{{ order.id }}</a></td>
+        <td>{{ order.created_at }}</td>
+        <td>{{ order.total }}</td>
+        <td>{{ order.status }}</td>
+    </tr>
     {% endfor %}
-</ul>
+</table>
 
 </body>
 </html>
