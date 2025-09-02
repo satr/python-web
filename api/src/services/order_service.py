@@ -1,6 +1,8 @@
 import uuid
 from datetime import datetime
 from typing import Optional
+import threading
+import pika
 
 from models.order import Order
 from repository.order_repository import OrderRepository
@@ -8,9 +10,13 @@ from repository.product_repository import ProductRepository
 
 
 class OrderService:
-    def __init__(self, order_repo: OrderRepository, product_repo: ProductRepository):
+    def __init__(self, order_repo: OrderRepository, product_repo: ProductRepository, mq_host):
         self._order_repo = order_repo
         self._product_repo = product_repo
+        self._mq_host = mq_host
+        self._mq_publish_connection = pika.BlockingConnection(pika.ConnectionParameters(host=mq_host))
+        self._mq_publish_channel = self._mq_publish_connection.channel()
+        self._mq_publish_channel.queue_declare(queue='orders')
 
     def create_order(self, order: Order) -> str:
         order.id = str(uuid.uuid4())
@@ -24,8 +30,17 @@ class OrderService:
             total += item.price * item.quantity
         order.total = total
         order.created_at = order.updated_at = datetime.now()
+
         self._order_repo.upsert(order)
+
+        # Non-blocking publish using a thread
+        threading.Thread(target=self._publish_order, args=(order.id,), daemon=True).start()
+
         return order.id
+
+    def _publish_order(self, order_id):
+        if self._mq_publish_channel.is_open:
+            self._mq_publish_channel.basic_publish(exchange='', routing_key='orders', body=str(order_id))
 
     def get_order(self, order_id: str) -> Optional[Order]:
         return self._order_repo.get_by_id(order_id)

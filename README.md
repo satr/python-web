@@ -101,3 +101,11 @@ make gen-api-client
 docker compose up
 ```
 Open the link [http://127.0.0.1:8001](http://127.0.0.1:8001)
+
+## Run RabbitMQ locally
+```
+make run-mq
+#or
+docker run -it -p 5672:5672 -p 15672:15672 --name rabbitmq --rm rabbitmq:3-management
+```
+* Open the Dashboard link [http://localhost:15672/](http://localhost:15672/), user: guest, password: guest

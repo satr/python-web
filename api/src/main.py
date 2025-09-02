@@ -1,4 +1,5 @@
 import http
+import os
 
 from fastapi import FastAPI,Response
 
@@ -16,7 +17,8 @@ app = FastAPI()
 order_repository = OrderRepository()
 product_repository = ProductRepository()
 
-order_service = OrderService(order_repository, product_repository)
+mq_host = os.getenv("MQ_HOST", "localhost")
+order_service = OrderService(order_repository, product_repository, mq_host)
 product_service = ProductService(product_repository)
 graph_ql_service = GraphQLService(order_service, product_service)
 

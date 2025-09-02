@@ -1,0 +1,21 @@
+services:
+  mq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://appuser:secret@db:5432/appdb
+      PYTHONUNBUFFERED: 1
+      MQ_HOST: localhost
+      MQ_PORT: 5672
+      MQ_USER: guest
+      MQ_PASSWORD: guest
+    depends_on:
+      - mq
+volumes:
+  db_data:

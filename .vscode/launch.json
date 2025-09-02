@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run API",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONUNBUFFERED": "1",
+                "MQ_HOST": "localhost",
+                "MQ_PORT": "5672",
+                "MQ_USER": "guest",
+                "MQ_PASSWORD": "guest"
+            },
+            "cwd": "${workspaceFolder}/api/src",
+            "program": "${workspaceFolder}/api/.venv/bin/uvicorn",
+            "args": ["main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+        },
+        {
+            "name": "Run Flask App",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONUNBUFFERED": "1",
+                "API_URL": "http://localhost:8000"
+            },
+            "cwd": "${workspaceFolder}/flask-app/src/app",
+            "program": "${workspaceFolder}/flask-app/.venv/bin/flask",
+            "args": ["--app", "app:create_app", "run", "--host", "0.0.0.0", "--port", "8001", "--reload"]
+        }
+    ]
+}
