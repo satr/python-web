@@ -43,8 +43,8 @@ class GraphQLService:
             if "description" in input:
                 product.description = input["description"]
             product.price = input["price"]
-            product_id = self.product_service.create_product(product)
-            return {"id": product_id}
+            id = self.product_service.create_product(product)
+            return {"id": id}
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 

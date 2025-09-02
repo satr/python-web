@@ -17,7 +17,7 @@ class ProductSchema:
     Attributes:
         name (str):
         price (float):
-        product_id (Union[None, Unset, str]):
+        id (Union[None, Unset, str]):
         description (Union[None, Unset, str]):
         created_at (Union[None, Unset, datetime.datetime]):
         updated_at (Union[None, Unset, datetime.datetime]):
@@ -25,7 +25,7 @@ class ProductSchema:
 
     name: str
     price: float
-    product_id: Union[None, Unset, str] = UNSET
+    id: Union[None, Unset, str] = UNSET
     description: Union[None, Unset, str] = UNSET
     created_at: Union[None, Unset, datetime.datetime] = UNSET
     updated_at: Union[None, Unset, datetime.datetime] = UNSET
@@ -36,11 +36,11 @@ class ProductSchema:
 
         price = self.price
 
-        product_id: Union[None, Unset, str]
-        if isinstance(self.product_id, Unset):
-            product_id = UNSET
+        id: Union[None, Unset, str]
+        if isinstance(self.id, Unset):
+            id = UNSET
         else:
-            product_id = self.product_id
+            id = self.id
 
         description: Union[None, Unset, str]
         if isinstance(self.description, Unset):
@@ -72,8 +72,8 @@ class ProductSchema:
                 "price": price,
             }
         )
-        if product_id is not UNSET:
-            field_dict["product_id"] = product_id
+        if id is not UNSET:
+            field_dict["id"] = id
         if description is not UNSET:
             field_dict["description"] = description
         if created_at is not UNSET:
@@ -90,14 +90,14 @@ class ProductSchema:
 
         price = d.pop("price")
 
-        def _parse_product_id(data: object) -> Union[None, Unset, str]:
+        def _parse_id(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(Union[None, Unset, str], data)
 
-        product_id = _parse_product_id(d.pop("product_id", UNSET))
+        id = _parse_id(d.pop("id", UNSET))
 
         def _parse_description(data: object) -> Union[None, Unset, str]:
             if data is None:
@@ -145,7 +145,7 @@ class ProductSchema:
         product_schema = cls(
             name=name,
             price=price,
-            product_id=product_id,
+            id=id,
             description=description,
             created_at=created_at,
             updated_at=updated_at,

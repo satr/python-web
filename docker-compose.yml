@@ -36,8 +36,8 @@ services:
     environment:
       API_URL: http://api:8000
       MQ_HOST: mq
-#      MQ_PORT: 5672
-#      MQ_USER: guest
-#      MQ_PASSWORD: guest
+      MQ_PORT: 5672
+      MQ_USER: guest
+      MQ_PASSWORD: guest
 volumes:
   db_data:

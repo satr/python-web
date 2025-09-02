@@ -26,11 +26,11 @@ class OrderService:
     def parse_order_form(self, form, products):
         items = []
         for product in products:
-            product_id = getattr(product, "product_id", None)
-            quantity = int(form.get(f"quantity_{product_id}", 0))
-            price = float(form.get(f"price_{product_id}", 0))
+            id = getattr(product, "id", None)
+            quantity = int(form.get(f"quantity_{id}", 0))
+            price = float(form.get(f"price_{id}", 0))
             if quantity > 0:
-                item = OrderItemSchema(product_id=product_id, quantity=quantity, price=price)
+                item = OrderItemSchema(product_id=id, quantity=quantity, price=price)
                 items.append(item)
         return items
 

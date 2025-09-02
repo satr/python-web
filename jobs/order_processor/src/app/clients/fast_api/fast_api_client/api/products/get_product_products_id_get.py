@@ -11,11 +11,11 @@ from ...types import Response
 
 
 def _get_kwargs(
-    product_id: str,
+    id: str,
 ) -> dict[str, Any]:
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": f"/products/{product_id}",
+        "url": f"/products/{id}",
     }
 
     return _kwargs
@@ -52,14 +52,14 @@ def _build_response(
 
 
 def sync_detailed(
-    product_id: str,
+    id: str,
     *,
     client: Union[AuthenticatedClient, Client],
 ) -> Response[Union[HTTPValidationError, ProductSchema]]:
     """Get Product
 
     Args:
-        product_id (str):
+        id (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -70,7 +70,7 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        product_id=product_id,
+        id=id,
     )
 
     response = client.get_httpx_client().request(
@@ -81,14 +81,14 @@ def sync_detailed(
 
 
 def sync(
-    product_id: str,
+    id: str,
     *,
     client: Union[AuthenticatedClient, Client],
 ) -> Optional[Union[HTTPValidationError, ProductSchema]]:
     """Get Product
 
     Args:
-        product_id (str):
+        id (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -99,20 +99,20 @@ def sync(
     """
 
     return sync_detailed(
-        product_id=product_id,
+        id=id,
         client=client,
     ).parsed
 
 
 async def asyncio_detailed(
-    product_id: str,
+    id: str,
     *,
     client: Union[AuthenticatedClient, Client],
 ) -> Response[Union[HTTPValidationError, ProductSchema]]:
     """Get Product
 
     Args:
-        product_id (str):
+        id (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -123,7 +123,7 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        product_id=product_id,
+        id=id,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -132,14 +132,14 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    product_id: str,
+    id: str,
     *,
     client: Union[AuthenticatedClient, Client],
 ) -> Optional[Union[HTTPValidationError, ProductSchema]]:
     """Get Product
 
     Args:
-        product_id (str):
+        id (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -151,7 +151,7 @@ async def asyncio(
 
     return (
         await asyncio_detailed(
-            product_id=product_id,
+            id=id,
             client=client,
         )
     ).parsed

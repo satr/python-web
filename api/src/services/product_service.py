@@ -16,8 +16,8 @@ class ProductService:
         self._product_repo.upsert(product)
         return product.id
 
-    def get_product(self, product_id: str) -> Optional[Product]:
-        return self._product_repo.get_by_id(product_id)
+    def get_product(self, id: str) -> Optional[Product]:
+        return self._product_repo.get_by_id(id)
 
     def get_product_by_name(self, name: str) -> Optional[Product]:
         products = self._product_repo.list()

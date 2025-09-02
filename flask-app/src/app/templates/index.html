@@ -28,9 +28,9 @@
         <tr>
             <td>{{ product.name }}</td>
             <td>
-                <input type="number" name="quantity_{{ product.product_id }}" min="0" value="0">
-                <input type="hidden" name="product_id_{{ product.product_id }}" value="{{ product.product_id }}">
-                <input type="hidden" name="price_{{ product.product_id }}" value="{{ product.price }}">
+                <input type="number" name="quantity_{{ product.id }}" min="0" value="0">
+                <input type="hidden" name="product_id_{{ product.id }}" value="{{ product.id }}">
+                <input type="hidden" name="price_{{ product.id }}" value="{{ product.price }}">
             </td>
         </tr>
         {% endfor %}

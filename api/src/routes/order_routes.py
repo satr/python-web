@@ -45,7 +45,10 @@ def get_order_router(order_service: OrderService) -> APIRouter:
 
 def convert_to_order(order_schema: OrderSchema) -> Order:
     order = Order()
-    order.items=order_schema.items
+    if hasattr(order_schema, "order_id") and not order_schema.order_id is None:
+        order.id = order_schema.order_id
+    order.status = order_schema.status or "pending"
+    order.total=order_schema.total or 0.0
     order.user_id=order_schema.user_id or "anonymous"
     order.updated_at = order.created_at = datetime.now()
     order.items = [convert_to_order_item(item) for item in order_schema.items]

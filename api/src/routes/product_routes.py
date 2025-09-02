@@ -10,16 +10,16 @@ def get_product_router(product_service: ProductService) -> APIRouter:
     @router.post("", response_model=ProductResponseSchema)
     def create_product(product: ProductSchema):
         try:
-            product_id = product_service.create_product(convert_to_product(product))
-            return ProductResponseSchema(id=product_id)
+            id = product_service.create_product(convert_to_product(product))
+            return ProductResponseSchema(id=id)
         except Exception as ex:
             raise HTTPException(status_code=500, detail=f"Failed to create Product: {ex}")
 
 
-    @router.get("/{product_id}", response_model=ProductSchema)
-    def get_product(product_id: str):
+    @router.get("/{id}", response_model=ProductSchema)
+    def get_product(id: str):
         try:
-            product = product_service.get_product(product_id)
+            product = product_service.get_product(id)
             if not product:
                 raise HTTPException(status_code=404, detail="Product not found")
             return convert_to_product_schema(product)
