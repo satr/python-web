@@ -4,6 +4,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   api:
     build: ./api
     ports:
@@ -11,11 +16,12 @@ services:
     environment:
       DATABASE_URL: postgresql://appuser:secret@db:5432/appdb
       PYTHONUNBUFFERED: 1
-      MQ_HOST: localhost
+      MQ_HOST: mq
       MQ_PORT: 5672
       MQ_USER: guest
       MQ_PASSWORD: guest
     depends_on:
-      - mq
+      mq:
+        condition: service_healthy
 volumes:
   db_data:
