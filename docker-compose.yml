@@ -51,6 +51,12 @@ services:
       MQ_PORT: 5672
       MQ_USER: guest
       MQ_PASSWORD: guest
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
   order-processor:
     build: ./jobs/order_processor
     environment:
