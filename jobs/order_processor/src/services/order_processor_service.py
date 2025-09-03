@@ -13,7 +13,7 @@ class OrderProcessorService:
     def get_mq_consume_channel(self, mq_host):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=mq_host))
         channel = connection.channel()
-        channel.queue_declare(queue='orders')
+        channel.queue_declare(queue='orders', durable=True)
         channel.basic_consume(queue='orders', on_message_callback=self.process_order_message, auto_ack=True)
         return channel
 

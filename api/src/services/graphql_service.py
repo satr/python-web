@@ -1,5 +1,6 @@
-import http
-from http.client import HTTPException
+import logging
+from fastapi import HTTPException
+
 
 from models.product import Product
 from schemas.product_schema import convert_to_product_schema
@@ -8,6 +9,7 @@ from services.product_service import ProductService
 import schemas.graphql_schema
 from graphql import graphql_sync
 
+LOG = logging.getLogger(__name__)
 
 class GraphQLService:
     def __init__(self, order_service: OrderService, product_service: ProductService):
@@ -49,17 +51,18 @@ class GraphQLService:
             raise HTTPException(status_code=500, detail=str(e))
 
     def get_product(self, obj, info, id=None, name=None):
-        if id:
-            product = self.product_service.get_product(id)
-        elif name:
-            product = self.product_service.get_product_by_name(name)
+        product = self.get_product_by_attrs(id, name)
         if not product:
             raise HTTPException(status_code=404)
         return convert_to_product_schema(product)
 
+    def get_product_by_attrs(self, id, name):
+        if id:
+            return self.product_service.get_product(id)
+        elif name:
+            return self.product_service.get_product_by_name(name)
+        return None
+
     def get_products(self, obj, info):
         products = self.product_service.list_products()
         return [convert_to_product_schema(product) for product in products]
-
-
-

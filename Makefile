@@ -25,7 +25,7 @@ gen-api-client-for-flask-app:
 	docker compose down
 
 .PHONY: gen-api-client-for-order-processor
-gen-api-client-for-order-processor
+gen-api-client-for-order-processor:
 	CURRENT_DIR=$$(pwd); echo "first run API" && cd ./jobs/order_processor && mkdir -p src/app/clients/fast_api; .venv/bin/openapi-python-client generate --url http://localhost:8000/openapi.json --output-path=src/app/clients/fast_api --overwrite; cd "$$CURRENT_DIR"; unset CURRENT_DIR
 
 .PHONY: run-mq
