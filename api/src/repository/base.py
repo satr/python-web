@@ -16,6 +16,7 @@ class BaseRepository(Generic[T]):
         self._filename = filename
         self._data_dir = os.getenv("DATA_DIR", "./data")
         self._file_path = os.path.join(self._data_dir, self._filename)
+        LOG.info(f"Repository file: {self._file_path} for type {T}")
         self._ensure_data_dir()
         self._load_from_disk()
 

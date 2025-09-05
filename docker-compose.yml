@@ -30,6 +30,9 @@ services:
       MQ_PORT: 5672
       MQ_USER: guest
       MQ_PASSWORD: guest
+      DATA_DIR: /var/data
+    volumes:
+      - ${DATA_DIR:-./data}:/var/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
       interval: 10s
