@@ -17,7 +17,7 @@ class GraphQLService:
         self.product_service = product_service
         self.graphql_schema = schemas.graphql_schema.schema
         # self.q.type_map["Date"] = schemas.DateType
-        self.graphql_schema.get_type("Mutation").fields["create_product"].resolve = self.create_product
+        self.graphql_schema.get_type("Mutation").fields["create_product"].resolve = self.upsert_product
         self.graphql_schema.get_type("Query").fields["products"].resolve = self.get_products
         self.graphql_schema.get_type("Query").fields["product"].resolve = self.get_product
 
@@ -32,20 +32,20 @@ class GraphQLService:
         # Execute a GraphQL mutation
         pass
 
-    def create_product(self, obj, info, input):
-        if not "name" in input or not "price" in input:
+    def upsert_product(self, obj, info, product_input):
+        if not "name" in product_input or not "price" in product_input:
             raise HTTPException(status_code=400, detail="Product name and price are required")
-        product_name = input["name"]
+        product_name = product_input["name"]
         product = self.product_service.get_product_by_name(product_name)
         if product:
             raise HTTPException(status_code=500, detail="Product with the same name already exists")
         try:
             product = Product()
             product.name = product_name
-            if "description" in input:
-                product.description = input["description"]
-            product.price = input["price"]
-            id = self.product_service.create_product(product)
+            if "description" in product_input:
+                product.description = product_input["description"]
+            product.price = product_input["price"]
+            id = self.product_service.upsert_product(product)
             return {"id": id}
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))

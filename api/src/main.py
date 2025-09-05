@@ -1,10 +1,13 @@
 import http
 import os
 
-from fastapi import FastAPI,Response
+from fastapi import FastAPI
+from fastapi import Response
+from starlette.middleware.sessions import SessionMiddleware
 
 from repository.order_repository import OrderRepository
 from repository.product_repository import ProductRepository
+from routes.auth_routes import get_auth_router
 from routes.graphql_routes import get_graphql_router
 from routes.order_routes import get_order_router
 from routes.product_routes import get_product_router
@@ -13,6 +16,7 @@ from services.order_service import OrderService
 from services.product_service import ProductService
 
 app = FastAPI()
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SESSION_SECRET", "dev-secret"))
 
 order_repository = OrderRepository()
 product_repository = ProductRepository()
@@ -22,6 +26,7 @@ order_service = OrderService(order_repository, product_repository, mq_host)
 product_service = ProductService(product_repository)
 graph_ql_service = GraphQLService(order_service, product_service)
 
+app.include_router(get_auth_router())
 app.include_router(get_order_router(order_service))
 app.include_router(get_product_router(product_service))
 app.include_router(get_graphql_router(graph_ql_service))

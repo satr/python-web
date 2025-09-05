@@ -8,9 +8,9 @@ def get_product_router(product_service: ProductService) -> APIRouter:
 
     @router.post("/", response_model=ProductResponseSchema)
     @router.post("", response_model=ProductResponseSchema)
-    def create_product(product: ProductSchema):
+    def upsert_product(product: ProductSchema):
         try:
-            id = product_service.create_product(convert_to_product(product))
+            id = product_service.upsert_product(convert_to_product(product))
             return ProductResponseSchema(id=id)
         except Exception as ex:
             raise HTTPException(status_code=500, detail=f"Failed to create Product: {ex}")
