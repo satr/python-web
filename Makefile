@@ -13,30 +13,30 @@ run-mq:
 
 .PHONY: build-api-docker
 build-api-docker:
-	docker build --platform=$(PLATFORM) ./api -t $(CR_URL)api:latest
+	docker build --platform=$(PLATFORM) ./api -t $(CR_URL)python-api:latest
 
 .PHONY: run-api-docker
 run-api-docker: build-api-docker
 	docker run -it -p 5672:5672 -p 15672:15672 --name rabbitmq --rm rabbitmq:3-management
-	docker run -p 8000:8000 $(CR_URL)api:latest
+	docker run -p 8000:8000 $(CR_URL)python-api:latest
 
 .PHONY: build-flask-app-docker
 build-flask-app-docker:
-	docker build --platform=$(PLATFORM) ./flask-app -t $(CR_URL)flask-app:latest
+	docker build --platform=$(PLATFORM) ./flask-app -t $(CR_URL)python-flask-app:latest
 
 .PHONY: run-flask-app-docker
 run-flask-app-docker: build-flask-app-docker
 	docker run -it -p 5672:5672 -p 15672:15672 --name rabbitmq --rm rabbitmq:3-management
-	docker run -p 8001:8001 $(CR_URL)flask-app:latest
+	docker run -p 8001:8001 $(CR_URL)python-flask-app:latest
 
 .PHONY: build-order-processor-docker
 build-order-processor-docker:
-	docker build --platform=$(PLATFORM) ./jobs/order_processor -t $(CR_URL)order-processor:latest
+	docker build --platform=$(PLATFORM) ./jobs/order_processor -t $(CR_URL)python-order-processor:latest
 
 .PHONY: run-order-processor-docker
 run-order-processor-docker: build-order-processor-docker
 	docker run -it -p 5672:5672 -p 15672:15672 --name rabbitmq --rm rabbitmq:3-management
-	docker run $(CR_URL)order-processor:latest
+	docker run $(CR_URL)python-order-processor:latest
 
 .PHONY: run-flask-app-local
 run-flask-app-local:
@@ -44,15 +44,15 @@ run-flask-app-local:
 
 .PHONY: push-api-docker
 push-api-docker: build-api-docker
-	docker push $(CR_URL)api:latest
+	docker push $(CR_URL)python-api:latest
 
 .PHONY: push-flask-app-docker
 push-flask-app-docker: build-flask-app-docker
-	docker push $(CR_URL)flask-app:latest
+	docker push $(CR_URL)python-flask-app:latest
 
 .PHONY: push-order-processor-docker
 push-order-processor-docker: build-order-processor-docker
-	docker push $(CR_URL)order-processor:latest
+	docker push $(CR_URL)python-order-processor:latest
 
 .PHONY: push-docker-all
 push-docker-all: push-api-docker push-flask-app-docker push-order-processor-docker
