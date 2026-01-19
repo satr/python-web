@@ -1,18 +1,39 @@
 version: v1.1.0
+
+# Required so `docker build --platform ...` works
+env:
+  - DOCKER_BUILDKIT=1
+
 steps:
-  - cmd: bash -c "docker version"
-  - cmd: bash -c "docker buildx version || true"
-
-  # Create and use a buildx builder
-  - cmd: bash -c "docker buildx create --use --name multiarchbuilder || docker buildx use multiarchbuilder"
-
-  # Build + push multi-platform image
-  - cmd: >
-      bash -c "
-      docker buildx build
-      --platform linux/amd64,linux/arm64
-      -t {{.Run.Registry}}/flaskapp:{{.Run.ID}}
-      -t {{.Run.Registry}}/flaskapp:latest
-      --push
+  # Build amd64 image
+  - build: >
+      -t {{.Run.Registry}}/flaskapp:{{.Run.ID}}-amd64
+      --platform linux/amd64
+      -f Dockerfile
       .
-      "
+    id: build_amd64
+
+  # Build arm64 image
+  - build: >
+      -t {{.Run.Registry}}/flaskapp:{{.Run.ID}}-arm64
+      --platform linux/arm64
+      -f Dockerfile
+      .
+    id: build_arm64
+
+  # Push both arch-specific tags
+  - push:
+      - {{.Run.Registry}}/flaskapp:{{.Run.ID}}-amd64
+      - {{.Run.Registry}}/flaskapp:{{.Run.ID}}-arm64
+
+  # Create and push a multi-arch manifest list as "latest"
+  - cmd: >
+      docker manifest create
+      {{.Run.Registry}}/flaskapp:latest
+      {{.Run.Registry}}/flaskapp:{{.Run.ID}}-amd64
+      {{.Run.Registry}}/flaskapp:{{.Run.ID}}-arm64
+
+  - cmd: docker manifest push --purge {{.Run.Registry}}/flaskapp:latest
+
+  # Optional: show what got published
+  - cmd: docker manifest inspect {{.Run.Registry}}/flaskapp:latest
